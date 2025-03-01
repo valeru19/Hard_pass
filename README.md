@@ -94,62 +94,7 @@
 - **2. Выйти** – завершает программу.
 
 ---
-## UML-диаграмма
 
-```mermaid
-classDiagram
-    class User {
-        -String username
-        -String password
-        -boolean isBlocked
-        -boolean passwordRestrictionsEnabled
-        +User(String username, String password)
-        +String getUsername()
-        +String getPassword()
-        +void setPassword(String password)
-        +boolean isBlocked()
-        +void setBlocked(boolean blocked)
-        +boolean isPasswordRestrictionsEnabled()
-        +void setPasswordRestrictionsEnabled(boolean enabled)
-        +boolean login(String enteredPassword)
-        +String toString()
-    }
-
-    class Admin {
-        +Admin(String username, String password)
-        +String toString()
-    }
-
-    class AuthenticationSystem {
-        -List~User~ users
-        -String dataFile
-        +AuthenticationSystem(String dataFile)
-        +List~User~ loadUsers()
-        +void saveUsers()
-        +User authenticateUser(String username, String password)
-        +User findUser(String username)
-        +void addUser(String username)
-        +void blockUser(String username)
-        +void togglePasswordRestrictions(boolean enabled)
-        +List~User~ getUsers()
-    }
-
-    class Main {
-        -AuthenticationSystem authSystem
-        -Scanner scanner
-        +void main(String[] args)
-        +String maskPassword()
-        +void adminMenu(Admin admin)
-        +void userMenu(User user)
-        +void changePassword(User user)
-        +boolean isPasswordValid(String password)
-        +void viewUsers()
-    }
-
-    User <|-- Admin
-    Main --> AuthenticationSystem
-    AuthenticationSystem --> User
----
 ## 📂 Структура проекта
 ```
 access-control-system/
@@ -261,7 +206,11 @@ access-control-system/
                                                           | + isPasswordValid()|
                                                           | + viewUsers()     |
                                                           +-------------------+
----
+
+
+
+
+
 
 
 
