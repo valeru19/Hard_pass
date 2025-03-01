@@ -107,67 +107,105 @@ access-control-system/
 ├── users.txt              # Файл хранения пользователей
 ├── README.md              # Документация проекта
 ```
-+-----------------------------------+
-|             User                  |
-+-----------------------------------+
-| - username: String                |
-| - password: String                |
-| - isBlocked: boolean              |
-| - passwordRestrictionsEnabled: boolean |
-+-----------------------------------+
-| + User(username: String, password: String) |
-| + getUsername(): String           |
-| + getPassword(): String           |
-| + setPassword(password: String): void |
-| + isBlocked(): boolean            |
-| + setBlocked(blocked: boolean): void |
-| + isPasswordRestrictionsEnabled(): boolean |
-| + setPasswordRestrictionsEnabled(enabled: boolean): void |
-| + login(enteredPassword: String): boolean |
-| + toString(): String              |
-+-----------------------------------+
-            ^
-            |
-            | (наследование)
-            |
-+-----------------------------------+
-|             Admin                 |
-+-----------------------------------+
-| + Admin(username: String, password: String) |
-| + toString(): String              |
-+-----------------------------------+
+## UML-диаграмма
 
-+-----------------------------------+
-|      AuthenticationSystem         |
-+-----------------------------------+
-| - users: List<User>               |
-| - dataFile: String                |
-+-----------------------------------+
-| + AuthenticationSystem(dataFile: String) |
-| - loadUsers(): List<User>         |
-| + saveUsers(): void               |
-| + authenticateUser(username: String, password: String): User |
-| + findUser(username: String): User|
-| + addUser(username: String): void |
-| + blockUser(username: String): void |
-| + togglePasswordRestrictions(enabled: boolean): void |
-| + getUsers(): List<User>          |
-+-----------------------------------+
+### Классы и их атрибуты
 
-+-----------------------------------+
-|             Main                  |
-+-----------------------------------+
-| - authSystem: AuthenticationSystem|
-| - scanner: Scanner                |
-+-----------------------------------+
-| + main(args: String[]): void      |
-| - maskPassword(): String          |
-| - adminMenu(admin: Admin): void   |
-| - userMenu(user: User): void      |
-| - changePassword(user: User): void|
-| - isPasswordValid(password: String): boolean |
-| - viewUsers(): void               |
-+-----------------------------------+
+#### Класс `User`
+- **Атрибуты**:
+  - `username: String` — имя пользователя.
+  - `password: String` — пароль пользователя.
+  - `isBlocked: boolean` — флаг блокировки пользователя.
+  - `passwordRestrictionsEnabled: boolean` — флаг ограничений на пароль.
+- **Методы**:
+  - `User(username: String, password: String)` — конструктор.
+  - `getUsername(): String` — возвращает имя пользователя.
+  - `getPassword(): String` — возвращает пароль.
+  - `setPassword(password: String): void` — устанавливает пароль.
+  - `isBlocked(): boolean` — проверяет, заблокирован ли пользователь.
+  - `setBlocked(blocked: boolean): void` — блокирует/разблокирует пользователя.
+  - `isPasswordRestrictionsEnabled(): boolean` — проверяет, включены ли ограничения на пароль.
+  - `setPasswordRestrictionsEnabled(enabled: boolean): void` — включает/отключает ограничения на пароль.
+  - `login(enteredPassword: String): boolean` — проверяет пароль.
+  - `toString(): String` — возвращает строковое представление пользователя.
+
+#### Класс `Admin` (наследует `User`)
+- **Методы**:
+  - `Admin(username: String, password: String)` — конструктор.
+  - `toString(): String` — возвращает строковое представление администратора.
+
+#### Класс `AuthenticationSystem`
+- **Атрибуты**:
+  - `users: List<User>` — список пользователей.
+  - `dataFile: String` — имя файла для хранения данных.
+- **Методы**:
+  - `AuthenticationSystem(dataFile: String)` — конструктор.
+  - `loadUsers(): List<User>` — загружает пользователей из файла.
+  - `saveUsers(): void` — сохраняет пользователей в файл.
+  - `authenticateUser(username: String, password: String): User` — аутентифицирует пользователя.
+  - `findUser(username: String): User` — ищет пользователя по имени.
+  - `addUser(username: String): void` — добавляет нового пользователя.
+  - `blockUser(username: String): void` — блокирует пользователя.
+  - `togglePasswordRestrictions(enabled: boolean): void` — включает/отключает ограничения на пароли.
+  - `getUsers(): List<User>` — возвращает список пользователей.
+
+#### Класс `Main`
+- **Атрибуты**:
+  - `authSystem: AuthenticationSystem` — система аутентификации.
+  - `scanner: Scanner` — объект для ввода данных.
+- **Методы**:
+  - `main(args: String[]): void` — точка входа в программу.
+  - `maskPassword(): String` — маскирует ввод пароля.
+  - `adminMenu(admin: Admin): void` — меню администратора.
+  - `userMenu(user: User): void` — меню обычного пользователя.
+  - `changePassword(user: User): void` — смена пароля.
+  - `isPasswordValid(password: String): boolean` — проверка пароля на соответствие ограничениям.
+  - `viewUsers(): void` — просмотр списка пользователей.
+
+### Отношения между классами
+
+1. **Наследование**:
+   - Класс `Admin` наследует класс `User`.
+
+2. **Ассоциация**:
+   - Класс `Main` использует объект класса `AuthenticationSystem`.
+   - Класс `AuthenticationSystem` управляет списком объектов класса `User`.
+
+### Схема отношений
+
+```plaintext
++-------------------+        +-------------------+        +-------------------+
+|      User         |        |      Admin        |        | AuthenticationSys |
++-------------------+        +-------------------+        +-------------------+
+| - username        |        |                   |        | - users           |
+| - password        |<|------|                   |        | - dataFile        |
+| - isBlocked       |        |                   |        +-------------------+
+| - passwordRestrict|        |                   |        | + loadUsers()     |
++-------------------+        +-------------------+        | + saveUsers()     |
+| + getUsername()   |        | + toString()      |        | + authenticateUser|
+| + getPassword()   |        +-------------------+        | + findUser()      |
+| + setPassword()   |                                     | + addUser()       |
+| + isBlocked()     |                                     | + blockUser()     |
+| + setBlocked()    |                                     | + togglePasswordR |
+| + login()         |                                     | + getUsers()      |
+| + toString()      |                                     +-------------------+
++-------------------+                                              ^
+                                                                   |
+                                                                   |
+                                                          +-------------------+
+                                                          |      Main         |
+                                                          +-------------------+
+                                                          | - authSystem      |
+                                                          | - scanner         |
+                                                          +-------------------+
+                                                          | + main()          |
+                                                          | + maskPassword()  |
+                                                          | + adminMenu()     |
+                                                          | + userMenu()      |
+                                                          | + changePassword()|
+                                                          | + isPasswordValid()|
+                                                          | + viewUsers()     |
+                                                          +-------------------+
 ---
 
 ## 📜 Формат хранения данных
