@@ -107,7 +107,67 @@ access-control-system/
 ├── users.txt              # Файл хранения пользователей
 ├── README.md              # Документация проекта
 ```
++-----------------------------------+
+|             User                  |
++-----------------------------------+
+| - username: String                |
+| - password: String                |
+| - isBlocked: boolean              |
+| - passwordRestrictionsEnabled: boolean |
++-----------------------------------+
+| + User(username: String, password: String) |
+| + getUsername(): String           |
+| + getPassword(): String           |
+| + setPassword(password: String): void |
+| + isBlocked(): boolean            |
+| + setBlocked(blocked: boolean): void |
+| + isPasswordRestrictionsEnabled(): boolean |
+| + setPasswordRestrictionsEnabled(enabled: boolean): void |
+| + login(enteredPassword: String): boolean |
+| + toString(): String              |
++-----------------------------------+
+            ^
+            |
+            | (наследование)
+            |
++-----------------------------------+
+|             Admin                 |
++-----------------------------------+
+| + Admin(username: String, password: String) |
+| + toString(): String              |
++-----------------------------------+
 
++-----------------------------------+
+|      AuthenticationSystem         |
++-----------------------------------+
+| - users: List<User>               |
+| - dataFile: String                |
++-----------------------------------+
+| + AuthenticationSystem(dataFile: String) |
+| - loadUsers(): List<User>         |
+| + saveUsers(): void               |
+| + authenticateUser(username: String, password: String): User |
+| + findUser(username: String): User|
+| + addUser(username: String): void |
+| + blockUser(username: String): void |
+| + togglePasswordRestrictions(enabled: boolean): void |
+| + getUsers(): List<User>          |
++-----------------------------------+
+
++-----------------------------------+
+|             Main                  |
++-----------------------------------+
+| - authSystem: AuthenticationSystem|
+| - scanner: Scanner                |
++-----------------------------------+
+| + main(args: String[]): void      |
+| - maskPassword(): String          |
+| - adminMenu(admin: Admin): void   |
+| - userMenu(user: User): void      |
+| - changePassword(user: User): void|
+| - isPasswordValid(password: String): boolean |
+| - viewUsers(): void               |
++-----------------------------------+
 ---
 
 ## 📜 Формат хранения данных
